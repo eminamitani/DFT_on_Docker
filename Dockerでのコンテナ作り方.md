@@ -1,11 +1,12 @@
 # Dockerを使って第一原理計算をお手軽に試せる仮想環境を作る
 
-第一原理計算をためしたり、そのデータ処理をしたりするのに、一番適しているのはUbuntuに代表されるLinux環境である。しかし学部生や修士課程で自前のLinux環境を持っている人は少ないだろう。
-そんなときに使えるのが仮想環境である。
-WindowsやMacOS上でLinuxの仮想環境を作る方法にはいくつかあるが、
-慣れてしまえばDockerが手っ取り早い。
+第一原理計算をためしたり、そのデータ処理をしたりするのに、一番適しているのはUbuntuに代表されるLinux環境です。
+しかし学部生や修士課程で自前のLinux環境を持っている人は少ないでしょう。
+そんなときに使えるのが仮想環境です。
+WindowsやMacOS上でLinuxの仮想環境を作る方法にはいくつかあるのですが、
+慣れてしまえばDockerが手っ取り早いです。
 
-というわけで、今回はDockerを使って仮想環境を作ってみようと思う。
+というわけで、今回はDockerを使って仮想環境を作ってみましょう。
 
 ## Dockerインストール
 
@@ -22,24 +23,56 @@ docker exec -it hogehoge /bin/bash
 のように、コンテナのbashをdockerから呼んできて作業もできますが、
 ssh(公開鍵暗号)でつないで処理するほうがやりやすいです。SCPでファイル転送もできます。
 というわけで、コンテナとやり取りするための公開鍵を作ってきます。
-MacOSだと
-```
-ssh-keygen
-```
-でコマンド打てば秘密鍵（手元においておくほう）
+MacOSだと`ssh-keygen`を使うことで秘密鍵（手元においておくほう）
 と、公開鍵(.pubの拡張子がついている方)のペアが作成されます。
-Windowsの場合はputty-genをインストールしてきて使う。
+Windowsの場合はputty-genをインストールしてきて使ってください。
+仮想環境なので、パスフレーズはなしで作ります。
 
-仮想環境なので、パスフレーズはなしで作っておく。
+Macの場合のコマンドと出力は以下のような風になっています。
+```
+% ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/Users/emi/.ssh/id_rsa): id_rsa_container  
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in id_rsa_container
+Your public key has been saved in id_rsa_container.pub
+The key fingerprint is:
+SHA256:YB9+QVP1FFdGxKSSD9xo06AZF5hyYdpW/oSa63qDwnM emi@EminoMacBook-Pro-2.local
+The key's randomart image is:
++---[RSA 3072]----+
+|          *=*o.*@|
+|        .=+X B =o|
+|      o oo* @ = .|
+|     . + o = B   |
+|        S +   o  |
+|         . .     |
+|     .   ..      |
+|      + E.o      |
+|       +.o..     |
++----[SHA256]-----+
+```
+処理は対話式に進んでいくのですが、
+`Enter file in which to save the key (/Users/emi/.ssh/id_rsa)`で聞かれた箇所で、
+`id_rsa_container `とファイル名を指定しているので  
+秘密鍵　`id_rsa_container`  
+公開鍵 `id_rsa_container.pub`  
+という設定になっています。
+
+この名前の鍵のペアをCLE上においておきますので、
+鍵生成がうまく行かない人はそれをダウンロードしてきて試してください。
 
 ## DockerFileを使って必要なもの一式が入ったイメージを構築
-素のUbuntuだとコンパイルとかに必要なものが全く入っていないし、
-上述の公開鍵暗号通信のライブラリも入っていない。
+LinuxベースのOSにはさまざまなものがありますが、
+今回はUbuntuというものを使いたいと思います。
+Dockerで動くUbuntuのイメージというのも用意されているのですが、
+ただ、素のUbuntuのDockerイメージですとコンパイルとかに必要なものが全く入っていないですし、
+上述の公開鍵暗号通信のライブラリも入っていないです。
 
-なので、Ubuntuの最新版をベースに必要なものを予め積み込んだイメージを作っておく。
-このイメージ作成方法を指定したファイルはDockerFileという。
-ファイル名もDockerFileにしておく。
-今回使うDockerFileの中身は以下のようなものである。
+なので、Ubuntuの最新版をベースに必要なものを予め積み込んだイメージを作ります。
+このイメージ作成方法を指定したファイルはDockerFileといいます。
+ファイル名もDockerFileにしておきます。
+今回使うDockerFileの中身は以下のようなものです。
 
 ```
 FROM ubuntu:latest
@@ -75,8 +108,11 @@ CMD mkdir ~/.ssh && \
 ```
 
 ## イメージの構築
-DockerFileを作業用ディレクトリにおいて、
--t のオプションでimageの名前を決めてビルドする。
+DockerFileを作業用ディレクトリで、Macの場合はターミナル、Windowsの場合はコマンドプロンプトを開きます。
+Dockerは`docker`というコマンドで様々な作業をさせることができます。
+まず、-t のオプションでimageの名前を決めてビルドします（いろいろなライブラリが搭載されたUbuntuのベースになるものをつくるということです）。
+この例では`ubuntu_ssh`というimageを作成します。
+
 ```
 docker build . -t ubuntu_ssh
 ```
@@ -84,22 +120,24 @@ docker build . -t ubuntu_ssh
 ```
 docker image ls
 ```
-で確認してみよう。
+で確認してみましょう。
 
 ## コンテナの起動
 
 ```
-docker run -dit --name ubuntu-2 -p 12222:22 ubuntu_ssh
+docker run -dit --name ubuntu -p 12222:22 ubuntu_ssh
 ```
-のようにしてコンテナを起動する。`-dit`はバックグラウンドで実行＆端末からキーボード入出力を受け取ったりするためのオプション類である。
-`-p 12222:22`はコンテナのport 22をホスト（自分のPC）のポート10022に連結することを指している。
-このコマンドで、さっきビルドしたubuntu_sshのイメージに基づいた、コンテナubuntu-2が起動する。
+のようにしてコンテナ（仮想環境）を起動します。`-dit`はバックグラウンドで実行＆端末からキーボード入出力を受け取ったりするためのオプション類です。
+`-p 12222:22`はコンテナのport 22をホスト（自分のPC）のポート10022に連結することを指しています。
+仮想のサーバーのポートを、現実のPCのどのポートに結びつけるかを指定していることになります。
+このコマンドで、さっきビルドしたubuntu_sshのイメージに基づいた、コンテナubuntuが起動します。
 
-作ったコンテナにssh接続してみよう。作成した秘密鍵の名前がid_rsa_containerだとすると
+作ったコンテナに公開鍵暗号でssh接続してみましょう。作成した秘密鍵の名前がid_rsa_containerで、
+SSH接続につかうポートは12222に連結されているので
 ```
 ssh root@localhost -p 12222 -i id_rsa_container
 ```
-でssh 接続される。
+でssh 接続されます。
 
 いちいちコマンドを書くのが面倒な場合、MacOSであれば
 `~/.ssh/config`に
@@ -114,18 +152,18 @@ Host docker-ubuntu
 ```
 ssh docker-ubuntu
 ```
-だけで接続できる。
+だけで接続できます。
 
 上の手順で起動したDockerコンテナを停止するには
 ```
-docker stop ubuntu-2
+docker stop ubuntu
 ```
 
 再び起動するには
 ```
-docker start ubuntu-2
+docker start ubuntu
 ```
-
+のようなコマンドを使います。
 
 
 ## Quantum-Espresso(q-e)のインストール
@@ -147,7 +185,7 @@ gitでダウンロードしてきたものは、現在進行系で様々な改�
 なので、安定バージョンになるようにgit でcheckoutする
 ```
 git fetch
-git checkout qe-7.0
+git checkout qe-7.2
 ```
 この状態で電子状態計算の部分を担うpw.xをコンパイルしよう
 
@@ -210,14 +248,16 @@ ATOMIC_SPECIES
  H    1   H.pbe-rrkjus.UPF
 ```
 のところの、`C.pbe-rrkjus.UPF`は、計算に使う擬ポテンシャルの種類を指している。
+
 http://pseudopotentials.quantum-espresso.org/legacy_tables
 のWebサイトから、各原子のページに飛んで同じ名前のファイルをダウンロードし、
 scpでコンテナにファイルを転送する。
-SCPはFileZillaやWinSCPのようなファイルクライアントを使っても良いし、
+SCPはFileZillaやWinSCPのようなファイルクライアントを使うと便利です。
+Macなら、ファイルクライアントがない場合でも、
 ```
-scp -i id_rsa_container -P 10022 C.pbe-rrkjus.UPF root@localhost:~/q-e-test/benzen/
+scp -i id_rsa_container -P 12222 C.pbe-rrkjus.UPF root@localhost:~/q-e-test/benzen/
 ```
-のようなコマンドで送ることもできる（コンテナ内ではq-e-test/benzenの中で作業している）
+のようなコマンドで送ることもできます（コンテナ内ではq-e-test/benzenの中で作業している）
 
 作業ディレクトリにインプットファイル(pw.inとしておく)、C.pbe-rrkjus.UPF、H.pbe-rrkjus.UPFの3つが揃ったら
 

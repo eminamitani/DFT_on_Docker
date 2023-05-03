@@ -1,5 +1,10 @@
 FROM ubuntu:latest
 RUN apt update
+#time zone
+#もし、openssh-serverのインストール時に途中で止まってしまう場合
+#以下の行をコメントアウトしてtimezoneの設定を追加
+ENV TZ=Asia/Tokyo
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt install -y build-essential
 RUN apt install -y python3
 RUN apt install -y gfortran
@@ -23,8 +28,8 @@ COPY id_rsa_container.pub /root/authorized_keys
 EXPOSE 22
 
 # 公開鍵を使えるようにする (パーミッション変更など)
-CMD mkdir ~/.ssh && \
-    mv ~/authorized_keys ~/.ssh/authorized_keys && \
-    chmod 0600 ~/.ssh/authorized_keys &&  \
+RUN mkdir ~/.ssh 
+RUN mv ~/authorized_keys ~/.ssh/authorized_keys 
+RUN  chmod 0600 ~/.ssh/authorized_keys 
     # 最後に ssh を起動
-    /usr/sbin/sshd -D
+CMD  /usr/sbin/sshd -D

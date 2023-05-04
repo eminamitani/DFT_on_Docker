@@ -21,14 +21,13 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 
-# 手元の公開鍵をコピー
-COPY id_rsa_container.pub /root/authorized_keys
-
 # ssh用の port を晒す
 EXPOSE 22
 
 # 手元の公開鍵を使えるようにする (パーミッション変更など)
 # 実習では使わないのでコメントアウト
+# 手元の公開鍵をコピー
+# COPY id_rsa_container.pub /root/authorized_keys
 # RUN mkdir ~/.ssh 
 # RUN mv ~/authorized_keys ~/.ssh/authorized_keys 
 # RUN  chmod 0600 ~/.ssh/authorized_keys 

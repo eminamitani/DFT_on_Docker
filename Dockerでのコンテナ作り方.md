@@ -28,7 +28,7 @@ Dockerで動くUbuntuのイメージというのも用意されているので�
 Dockerfileはこのリポジトリに置いてあります。
 リポジトリ全体のファイルをダウンロードしたい場合は、以下のように`Code`の部分をクリックして、
 ZIPでのダウンロードを選択してください。
-![download](img/github_download.png.png)
+![download](https://github.com/eminamitani/DFT_on_Docker/blob/16efb08b2f59ad78bfc77084a2f808567124881f/img/github_download.png)
 
 
 Step by Stepでどんな画面が出てくるかのスクリーンショットを使った説明は、

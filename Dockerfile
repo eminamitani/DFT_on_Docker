@@ -27,9 +27,10 @@ COPY id_rsa_container.pub /root/authorized_keys
 # ssh用の port を晒す
 EXPOSE 22
 
-# 公開鍵を使えるようにする (パーミッション変更など)
-RUN mkdir ~/.ssh 
-RUN mv ~/authorized_keys ~/.ssh/authorized_keys 
-RUN  chmod 0600 ~/.ssh/authorized_keys 
-    # 最後に ssh を起動
+# 手元の公開鍵を使えるようにする (パーミッション変更など)
+# 実習では使わないのでコメントアウト
+# RUN mkdir ~/.ssh 
+# RUN mv ~/authorized_keys ~/.ssh/authorized_keys 
+# RUN  chmod 0600 ~/.ssh/authorized_keys 
+#ssh を起動
 CMD  /usr/sbin/sshd -D

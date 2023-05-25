@@ -1,0 +1,40 @@
+&CONTROL 
+calculation='bands' 
+ restart_mode='from_scratch' 
+outdir='./tmp' 
+pseudo_dir='./' 
+prefix= 'graphene' 
+etot_conv_thr=1.0D-10 
+wf_collect=.true. 
+/ 
+&SYSTEM 
+ ibrav=4
+ celldm(1)=4.610722665
+ celldm(3)=8.0
+nat=2
+ntyp=1
+ecutwfc=120.0 
+nspin=1 
+nbnd =16
+occupations = 'smearing' 
+degauss = 0.01D0 
+smearing = 'methfessel-paxton' 
+/ 
+&ELECTRONS 
+conv_thr=1.0e-10
+mixing_beta=0.4 
+/ 
+
+ATOMIC_SPECIES 
+C  12.00 C.pz-vbc.UPF  !vbc NC
+ATOMIC_POSITIONS crystal 
+C 0.66666666666 0.333333333333 0.0000000000  
+C 0.33333333333 0.666666666666 0.0000000000
+
+
+K_POINTS {tpiba_b} 
+ 4
+ gG 30 
+ M  30 
+ K  30
+ gG 1

@@ -1,0 +1,6 @@
+& bands 
+outdir ='./tmp' 
+prefix='graphene' 
+filband='gr.band' 
+lsym= .true. 
+/ 

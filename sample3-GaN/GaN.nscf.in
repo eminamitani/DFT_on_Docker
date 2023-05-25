@@ -1,0 +1,42 @@
+&CONTROL 
+calculation='bands' 
+ restart_mode='from_scratch' 
+outdir='./' 
+pseudo_dir='./' 
+prefix= 'GaN' 
+etot_conv_thr=1.0D-07 
+forc_conv_thr=1.0D-05 
+wf_collect=.true. 
+/ 
+&SYSTEM 
+ ibrav=4
+celldm(1)= 5.955
+celldm(3)= 1.631
+nat=4
+ntyp=2
+ecutwfc=80
+nspin=1 
+nbnd=36
+/ 
+&ELECTRONS 
+conv_thr=1.0e-10
+mixing_beta=0.4 
+/ 
+ATOMIC_SPECIES 
+Ga 69.723 Ga_ONCV_LDA-1.0.upf
+N 14.0067 N_ONCV_LDA-1.0.upf
+ATOMIC_POSITIONS (crystal)
+Ga       0.333333333   0.666666666   0.500663402
+Ga       0.666666666   0.333333333   0.000663402
+N        0.333333333   0.666666666   0.124336598
+N        0.666666666   0.333333333   0.624336598
+K_POINTS {tpiba_b} 
+ 8 
+ gG 30 
+ M  30 
+ K  30
+ gG 15 
+ A  30 
+ L  30 
+ H  30 
+ A  1 

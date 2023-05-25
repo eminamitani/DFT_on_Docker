@@ -1,0 +1,6 @@
+&bands 
+outdir ='./' 
+prefix='GaN' 
+filband='GaN.band' 
+lsym= .true. 
+/ 

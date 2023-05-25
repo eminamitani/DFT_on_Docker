@@ -1,4 +1,4 @@
-& bands 
+&bands 
 outdir ='./tmp' 
 prefix='graphene' 
 filband='gr.band' 

@@ -1,0 +1,10 @@
+Si bulk phonon
+&inputph
+tr2_ph=1.0d-12,
+prefix='Si',
+fildyn='Si.dyn',
+outdir='./'
+trans=.true.
+ldisp=.true.
+nq1=3,nq2=3,nq3=3
+/

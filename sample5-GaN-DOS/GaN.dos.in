@@ -1,0 +1,6 @@
+&dos
+outdir ='./' 
+prefix='GaN' 
+fildos='GaN.dos' 
+bz_sum='tetrahedra'
+/ 

@@ -1,0 +1,6 @@
+&dos
+outdir ='./tmp' 
+prefix='graphene' 
+bz_sum='tetrahedra'
+fildos='gr.dos' 
+/ 

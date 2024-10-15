@@ -11,3 +11,5 @@
 
 ## explanation for samples
 [sample2](https://tinted-kale-cc0.notion.site/sample2-graphene-band-structure-11cc03427a40801986f1dd6209bbd0c8)
+
+[sample3](https://tinted-kale-cc0.notion.site/sample3-120c03427a40808f9efdc435ea53defa?pvs=4)

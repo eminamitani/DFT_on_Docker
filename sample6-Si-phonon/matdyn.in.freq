@@ -1,0 +1,15 @@
+&input
+asr='simple',
+flfrc='Si.fc',
+flfrq='Si.freq',
+dos=.false.
+q_in_band_form=.true.
+/
+7 
+0.0 0.0 0.0 30 #Gamma
+0.0 1.0 0.0 30 #X
+0.5 1.0 0.0 30 #W
+0.5 0.5 0.5 15 #L
+0.75 0.75 0.0 30 #K
+0.0 0.0 0.0 30 #Gamma
+0.5 0.5 0.5 1 #L
